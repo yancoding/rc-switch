@@ -509,10 +509,13 @@ void RCSwitch::send(unsigned long long code, unsigned int length) {
 
   for (int nRepeat = 0; nRepeat < nRepeatTransmit; nRepeat++) {
     for (int i = length-1; i >= 0; i--) {
-      if (code & (1LL << i))
-        this->transmit(protocol.one);
-      else
+      if (i == 64)
         this->transmit(protocol.zero);
+      else
+        if (code & (1LL << i))
+          this->transmit(protocol.one);
+        else
+          this->transmit(protocol.zero);
     }
     this->transmit(protocol.syncFactor);
   }
